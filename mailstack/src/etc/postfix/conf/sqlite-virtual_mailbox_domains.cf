@@ -1,0 +1,2 @@
+dbpath = /database/mailstack.db
+query = SELECT name FROM domain WHERE name='%s'

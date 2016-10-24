@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+
+  webmail:
+    build: webmail/.
+    env_file: .env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "$ROOT/webmail:/data"
+      - "$ROOT/certs:/certs"
+    restart: always
+
+  mailstack:
+    build: mailstack/.
+    env_file: .env
+    ports:
+      - "25:25"
+      - "143:143"
+      - "465:465"
+      - "587:587"
+      - "993:993"
+      - "8000:80"
+    volumes:
+      - "$ROOT/redis:/data"
+      - "$ROOT/database:/database"
+      - "$ROOT/filter:/filter"
+      - "$ROOT/filter:/var/lib/rspamd"
+      - "$ROOT/mail:/mail"
+      - "$ROOT/certs:/certs"
+      - "$ROOT/overrides:/overrides"
+      - "$ROOT/dkim:/dkim"
+    restart: always
+
+
