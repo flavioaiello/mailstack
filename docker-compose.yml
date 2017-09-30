@@ -2,9 +2,22 @@ version: '3.3'
 
 services:
 
+  roundcube:
+    # image: flavioaiello/roundcube
+    build: ./roundcube
+    environment:
+      - SECRET_KEY=MyUn1qu3curePW
+    ports:
+      - "8080:80"
+    volumes:
+      - /tmp/mailstack/webmail:/data
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
   redis:
     image: redis:latest
-    restart: always
     volumes:
       - /tmp/mailstack/redis:/data
     deploy:
@@ -13,12 +26,12 @@ services:
         max_attempts: 3
 
   dovecot:
-    #image: flavioaiello/dovecot
+    # image: flavioaiello/dovecot
     build: ./dovecot
     environment:
       - POSTMASTER=admin
-      - DOMAIN=serverking.ch
-      - HOSTNAME=mail.serverking.ch
+      - DOMAIN=vcap.me
+      - HOSTNAME=mail.vcap.me
       - RECIPIENT_DELIMITER=+
     ports:
       - "110:110"
@@ -41,8 +54,8 @@ services:
     #image: flavioaiello/mailstack
     build: ./postfix
     environment:
-      - DOMAIN=serverking.ch
-      - HOSTNAME=mail.serverking.ch
+      - DOMAIN=vcap.me
+      - HOSTNAME=mail.vcap.me
       - MESSAGE_SIZE_LIMIT=50000000
       - RELAYNETS=172.16.0.0/12
       - RELAYHOST=
@@ -111,7 +124,10 @@ services:
     build: ./admin
     environment:
       - DEBUG=false
-      - SECRET_KEY=MyUn1qu3curePW
+      - TLS_FLAVOR=none
+      - USERNAME=admin
+      - DOMAIN=vcap.me
+      - PASSWORD=testpw
     ports:
       - "8000:80"
     volumes:
