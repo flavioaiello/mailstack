@@ -1,37 +1,138 @@
-version: '2'
+version: '3.3'
 
 services:
 
-  webmail:
-    build: webmail/.
-    env_file: .env
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "$ROOT/webmail:/data"
-      - "$ROOT/certs:/certs"
+  redis:
+    image: redis:latest
     restart: always
+    volumes:
+      - /tmp/mailstack/redis:/data
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
 
-  mailstack:
-    build: mailstack/.
-    env_file: .env
+  dovecot:
+    #image: flavioaiello/dovecot
+    build: ./dovecot
+    environment:
+      - POSTMASTER=admin
+      - DOMAIN=serverking.ch
+      - HOSTNAME=mail.serverking.ch
+      - RECIPIENT_DELIMITER=+
+    ports:
+      - "110:110"
+      - "143:143"
+      - "993:993"
+      - "995:995"
+      - "4190:4190"
+    volumes:
+      - /tmp/mailstack/data:/data
+      - /tmp/mailstack/mail:/mail
+      - /tmp/mailstack/certs:/certs
+      - /tmp/mailstack/overrides:/overrides
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
+
+  postfix:
+    #image: flavioaiello/mailstack
+    build: ./postfix
+    environment:
+      - DOMAIN=serverking.ch
+      - HOSTNAME=mail.serverking.ch
+      - MESSAGE_SIZE_LIMIT=50000000
+      - RELAYNETS=172.16.0.0/12
+      - RELAYHOST=
+      - RECIPIENT_DELIMITER=+
     ports:
       - "25:25"
-      - "143:143"
       - "465:465"
       - "587:587"
-      - "993:993"
+    volumes:
+      - /tmp/mailstack/data:/data
+      - /tmp/mailstack/certs:/certs
+      - /tmp/mailstack/overrides:/overrides
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
+  rmilter:
+    # image: flavioaiello/rmilter
+    build: ./rmilter
+    depends_on:
+      - redis
+    environment:
+      - RELAYNETS=172.16.0.0/12
+    volumes:
+      - /tmp/mailstack/filter:/data
+      - /tmp/mailstack/dkim:/dkim
+      - /tmp/mailstack/overrides:/overrides
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
+  rspamd:
+    # image: flavioaiello/rspamd
+    build: ./rspamd
+    volumes:
+      - /tmp/mailstack/filter:/var/lib/rspamd
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
+  clamav:
+    # image: flavioaiello/clamav
+    build: ./clamav
+    volumes:
+      - /tmp/mailstack/filter:/data
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
+  radicale:
+    # image: flavioaiello/radicale
+    build: ./radicale
+    volumes:
+      - /tmp/mailstack/dav:/data
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
+  admin:
+    # image: flavioaiello/admin
+    build: ./admin
+    environment:
+      - DEBUG=false
+      - SECRET_KEY=MyUn1qu3curePW
+    ports:
       - "8000:80"
     volumes:
-      - "$ROOT/redis:/data"
-      - "$ROOT/database:/database"
-      - "$ROOT/filter:/filter"
-      - "$ROOT/filter:/var/lib/rspamd"
-      - "$ROOT/mail:/mail"
-      - "$ROOT/certs:/certs"
-      - "$ROOT/overrides:/overrides"
-      - "$ROOT/dkim:/dkim"
-    restart: always
+      - /tmp/mailstack/data:/data
+      - /tmp/mailstack/dkim:/dkim
+      - /tmp/mailstack/certs:/certs
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
 
-
+  fetchmail:
+    # image: flavioaiello/fetchmail
+    build: ./fetchmail
+    environment:
+      - DEBUG=false
+      - FETCHMAIL_DELAY=600
+    volumes:
+      - /tmp/mailstack/data:/data
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
