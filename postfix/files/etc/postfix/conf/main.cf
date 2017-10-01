@@ -77,7 +77,7 @@ smtpd_sasl_local_domain = $myhostname
 # Authentication is done against dovecot, which acts as the main authention
 # source
 smtpd_sasl_type = dovecot
-smtpd_sasl_path = inet:imap:2102
+smtpd_sasl_path = inet:dovecot:2102
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_security_options = noanonymous
 
@@ -93,7 +93,7 @@ virtual_mailbox_maps = $virtual_alias_maps
 
 # Mails are transported if required, then forwarded to Dovecot for delivery
 transport_maps = ${sql}sqlite-transport.cf
-virtual_transport = lmtp:inet:imap:2525
+virtual_transport = lmtp:inet:dovecot:2525
 
 # In order to prevent Postfix from running DNS query, enforce the use of the
 # native DNS stack, that will check /etc/hosts properly.
