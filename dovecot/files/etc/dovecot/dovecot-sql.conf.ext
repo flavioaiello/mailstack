@@ -5,4 +5,4 @@ connect = /data/main.db
 password_query = SELECT password FROM user WHERE user.email = '%u'
 
 # User quota
-quota_query = SELECT '*:bytes=' || user.quota_bytes AS quota_rule FROM user WHERE user.email = '%u'
+user_query = SELECT '*:bytes=' || user.quota_bytes AS quota_rule FROM user WHERE user.email = '%u'
