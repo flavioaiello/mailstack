@@ -4,7 +4,7 @@ COPY files /
 
 WORKDIR /app
 
-RUN set -ex ;\
+RUN set -ex;\
     apk update;\
     apk upgrade;\
     apk add --no-cache --virtual .build-deps;\

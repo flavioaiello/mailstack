@@ -3,7 +3,7 @@ version: '3.3'
 services:
 
   roundcube:
-    # image: flavioaiello/roundcube
+    # image: flavioaiello/mailstack-roundcube
     build: ./roundcube
     environment:
       - SECRET_KEY=MyUn1qu3curePW
@@ -26,7 +26,7 @@ services:
         max_attempts: 3
 
   dovecot:
-    # image: flavioaiello/dovecot
+    # image: flavioaiello/mailstack-dovecot
     build: ./dovecot
     environment:
       - POSTMASTER=admin
@@ -34,7 +34,6 @@ services:
       - HOSTNAME=mail.vcap.me
       - RECIPIENT_DELIMITER=+
     ports:
-      - "110:110"
       - "143:143"
       - "993:993"
       - "995:995"
@@ -51,7 +50,7 @@ services:
 
 
   postfix:
-    #image: flavioaiello/mailstack
+    #image: flavioaiello/mailstack-mailstack
     build: ./postfix
     environment:
       - DOMAIN=vcap.me
@@ -74,7 +73,7 @@ services:
         max_attempts: 3
 
   rmilter:
-    # image: flavioaiello/rmilter
+    # image: flavioaiello/mailstack-rmilter
     build: ./rmilter
     depends_on:
       - redis
@@ -90,7 +89,7 @@ services:
         max_attempts: 3
 
   rspamd:
-    # image: flavioaiello/rspamd
+    # image: flavioaiello/mailstack-rspamd
     build: ./rspamd
     volumes:
       - /tmp/mailstack/filter:/var/lib/rspamd
@@ -100,7 +99,7 @@ services:
         max_attempts: 3
 
   clamav:
-    # image: flavioaiello/clamav
+    # image: flavioaiello/mailstack-clamav
     build: ./clamav
     volumes:
       - /tmp/mailstack/filter:/data
@@ -110,7 +109,7 @@ services:
         max_attempts: 3
 
   radicale:
-    # image: flavioaiello/radicale
+    # image: flavioaiello/mailstack-radicale
     build: ./radicale
     volumes:
       - /tmp/mailstack/dav:/data
@@ -120,7 +119,7 @@ services:
         max_attempts: 3
 
   admin:
-    # image: flavioaiello/admin
+    # image: flavioaiello/mailstack-admin
     build: ./admin
     environment:
       - DEBUG=false
@@ -141,7 +140,7 @@ services:
         max_attempts: 3
 
   fetchmail:
-    # image: flavioaiello/fetchmail
+    # image: flavioaiello/mailstack-fetchmail
     build: ./fetchmail
     environment:
       - DEBUG=false

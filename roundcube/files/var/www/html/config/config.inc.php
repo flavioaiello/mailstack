@@ -18,8 +18,7 @@ $config['default_host'] = 'dovecot';
 $config['default_port'] = 143;
 //$config['smtp_server'] = 'tls://postfix';
 $config['smtp_server'] = 'postfix';
-//$config['smtp_port'] = 587;
-$config['smtp_port'] = 25;
+$config['smtp_port'] = 587;
 $config['smtp_user'] = '%u';
 $config['smtp_pass'] = '%p';
 // Sieve script management

@@ -1,9 +1,9 @@
 #!/bin/sh
 
-echo "*** Bootstrap the database if clamav is running for the first time ***"
+echo "*** Initialize database ***"
 [ -f /data/main.cvd ] || freshclam
 
-echo "*** Run the update daemon ***"
+echo "*** Start update agent in background mode ***"
 freshclam -d -c 6
 
 echo "*** Startup $0 suceeded now starting $@ ***"
