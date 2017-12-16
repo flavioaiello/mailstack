@@ -1,9 +1,12 @@
 #!/bin/sh
 
+echo "*** Summarize variables in config files ***"
+find . -name '*.cf' -exec grep -r -o '{{.*}}' {} +
+
 echo "*** Loop all env variables matching the substitution pattern for stage specific configuration ***"
-env | while read PROPERTY; do
-    echo "*** Set key ${PROPERTY%=*} to value ${PROPERTY#*=} ***"
-    sed -i "s|{{ ${PROPERTY%=*} }}|${PROPERTY#*=}|g" /etc/postfix/*.cf
+env | while read VARIABLE; do
+    echo "*** Set key ${VARIABLE%=*} to value ${VARIABLE#*=} ***"
+    sed -i "s|{{ ${VARIABLE%=*} }}|${VARIABLE#*=}|g" /etc/postfix/*.cf
 done
 
 # Override Postfix main configuration

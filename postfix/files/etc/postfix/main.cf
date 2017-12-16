@@ -1,6 +1,4 @@
-###############
-# General
-###############
+### General
 
 # Main domain and hostname
 mydomain = {{ DOMAIN }}
@@ -31,9 +29,8 @@ relayhost = {{ RELAYHOST }}
 # Recipient delimiter for extended addresses
 recipient_delimiter = {{ RECIPIENT_DELIMITER }}
 
-###############
-# TLS
-###############
+
+### TLS
 
 # General TLS configuration
 tls_high_cipherlist = EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA256:EECDH:+CAMELLIA128:+AES128:+SSLv3:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!DSS:!RC4:!SEED:!IDEA:!ECDSA:kEDH:CAMELLIA128-SHA:AES128-SHA
@@ -68,9 +65,8 @@ smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 tls_ssl_options = NO_COMPRESSION
 tls_preempt_cipherlist = yes
 
-###############
-# SASL
-###############
+
+### SASL
 
 smtpd_sasl_local_domain = $myhostname
 
@@ -81,9 +77,8 @@ smtpd_sasl_path = inet:dovecot:2102
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_security_options = noanonymous
 
-###############
-# Virtual
-###############
+
+### Virtual
 
 # The alias map actually returns both aliases and local mailboxes, which is
 # required for reject_unlisted_sender to work properly
@@ -99,9 +94,7 @@ virtual_transport = lmtp:inet:dovecot:2525
 # native DNS stack, that will check /etc/hosts properly.
 lmtp_host_lookup = native
 
-###############
-# Restrictions
-###############
+### Restrictions
 
 # Delay all rejects until all information can be logged
 smtpd_delay_reject = yes
@@ -113,31 +106,13 @@ smtpd_sender_login_maps = $virtual_alias_maps
 smtpd_helo_required = yes
 
 # Sender restrictions
-smtpd_sender_restrictions =
-   permit_mynetworks,
-   reject_non_fqdn_sender,
-   reject_unknown_sender_domain,
-   reject_unlisted_sender,
-   reject_sender_login_mismatch,
-   permit
+smtpd_sender_restrictions = permit_mynetworks, reject_non_fqdn_sender, reject_unknown_sender_domain, reject_unlisted_sender, reject_sender_login_mismatch, permit
 
 # Recipient restrictions:
-smtpd_recipient_restrictions =
-   reject_unauth_pipelining,
-   reject_non_fqdn_recipient,
-   reject_unknown_recipient_domain,
-   permit_mynetworks,
-   permit
+smtpd_recipient_restrictions = reject_unauth_pipelining, reject_non_fqdn_recipient, reject_unknown_recipient_domain, permit_mynetworks, permit
 
-###############
-# Milter
-###############
-
+### Milter
 smtpd_milters = inet:milter:9900
 milter_protocol = 6
 milter_mail_macros = i {mail_addr} {client_addr} {client_name} {auth_authen}
 milter_default_action = tempfail
-
-###############
-# Extra Settings
-###############

@@ -1,3 +1,2 @@
 dbpath = /data/main.db
-query =
-  SELECT 'smtp:['||smtp||']' FROM relay WHERE name='%s'
+query = SELECT 'smtp:['||smtp||']' FROM relay WHERE name='%s'
