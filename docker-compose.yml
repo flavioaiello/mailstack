@@ -2,6 +2,26 @@ version: '3.3'
 
 services:
 
+  clamav:
+    # image: flavioaiello/mailstack-clamav
+    build: ./clamav
+    volumes:
+      - /tmp/mailstack/filter:/data
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
+  freshclam:
+    # image: flavioaiello/mailstack-freshclam
+    build: ./freshclam
+    volumes:
+      - /tmp/mailstack/filter:/data
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
   roundcube:
     # image: flavioaiello/mailstack-roundcube
     build: ./roundcube
@@ -82,15 +102,6 @@ services:
         condition: on-failure
         max_attempts: 3
 
-  clamav:
-    # image: flavioaiello/mailstack-clamav
-    build: ./clamav
-    volumes:
-      - /tmp/mailstack/filter:/data
-    deploy:
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
 
   radicale:
     # image: flavioaiello/mailstack-radicale
