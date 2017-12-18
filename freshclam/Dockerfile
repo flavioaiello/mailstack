@@ -8,7 +8,7 @@ RUN set -ex ;\
     apk add --no-cache su-exec tini clamav clamav-libunrar ;\
     rm -rf /var/cache/apk/*;\
     mkdir /run/clamav/;\
-    chown clamav /run/clamav/
+    chown clamav:clamav /run/clamav/
 
 ENTRYPOINT ["/sbin/tini", "--", "entrypoint.sh"]
 CMD ["freshclam", "-d", "-c", "6"]

@@ -2,7 +2,7 @@ driver = sqlite
 connect = /data/main.db
 
 # User password
-password_query = SELECT password FROM user WHERE user.email = '%u'
+password_query = SELECT  NULL as password, 'Y' as nopassword FROM user WHERE user.email = '%u'
 
 # User quota
 user_query = SELECT '*:bytes=' || user.quota_bytes AS quota_rule FROM user WHERE user.email = '%u'

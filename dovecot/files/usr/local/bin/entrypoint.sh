@@ -7,8 +7,7 @@ env | while read PROPERTY; do
 done
 
 # Fix permissions
-chown -R mail:mail /mail
-chown -R mail:mail /var/lib/dovecot
+chown -R mail:mail /mail /var/lib/dovecot
 
 echo "*** Startup $0 suceeded now starting $@ ***"
 exec "$@"
