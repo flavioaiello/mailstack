@@ -5,9 +5,10 @@ COPY files /
 RUN set -ex ;\
     apk update;\
     apk upgrade;\
-    apk add --no-cache su-exec tini rspamd ca-certificates;\
+    apk add --no-cache su-exec tini clamav clamav-libunrar ;\
     rm -rf /var/cache/apk/*;\
-    mkdir /run/rspamd
+    mkdir /run/clamav/;\
+    chown clamav /run/clamav/
 
 ENTRYPOINT ["/sbin/tini", "--", "entrypoint.sh"]
-CMD ["rspamd", "-u", "rspamd", "-g", "rspamd", "-f"]
+CMD ["freshclam", "-d", "-c", "6"]

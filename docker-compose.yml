@@ -72,22 +72,6 @@ services:
         condition: on-failure
         max_attempts: 3
 
-  rmilter:
-    # image: flavioaiello/mailstack-rmilter
-    build: ./rmilter
-    depends_on:
-      - redis
-    environment:
-      - RELAYNETS=172.16.0.0/12
-    volumes:
-      - /tmp/mailstack/filter:/data
-      - /tmp/mailstack/dkim:/dkim
-      - /tmp/mailstack/overrides:/overrides
-    deploy:
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
-
   rspamd:
     # image: flavioaiello/mailstack-rspamd
     build: ./rspamd
