@@ -3,8 +3,7 @@ version: '3.3'
 services:
 
   dovecot:
-    # image: flavioaiello/mailstack-dovecot
-    build: ./dovecot
+    image: flavioaiello/dovecot
     environment:
       - POSTMASTER=postmaster
       - DOMAIN=vcap.me
@@ -20,14 +19,27 @@ services:
       - /tmp/mailstack/mail:/mail
       - /tmp/mailstack/certs:/certs
       - /tmp/mailstack/overrides:/overrides
+    healthcheck:
+      test: nc -w 7 -zvv 0.0.0.0 143
+      interval: 30s
+      timeout: 30s
+      retries: 20
     deploy:
+      resources:
+        reservations:
+          cpus: '0.05'
+          memory: 1024M
+        limits:
+          memory: 1024M
+      mode: replicated
+      replicas: 1
       restart_policy:
-        condition: on-failure
-        max_attempts: 3
+        condition: any
+        delay: 5s
+        max_attempts: 10
 
   postfix:
-    #image: flavioaiello/mailstack-mailstack
-    build: ./postfix
+    image: flavioaiello/postfix
     environment:
       - DOMAIN=vcap.me
       - HOSTNAME=mail.vcap.me
@@ -43,47 +55,109 @@ services:
       - /tmp/mailstack/data:/data
       - /tmp/mailstack/certs:/certs
       - /tmp/mailstack/overrides:/overrides
+    healthcheck:
+      test: nc -w 7 -zvv 0.0.0.0 587
+      interval: 30s
+      timeout: 30s
+      retries: 20
     deploy:
+      resources:
+        reservations:
+          cpus: '0.05'
+          memory: 1024M
+        limits:
+          memory: 1024M
+      mode: replicated
+      replicas: 1
       restart_policy:
-        condition: on-failure
-        max_attempts: 3
+        condition: any
+        delay: 5s
+        max_attempts: 10
 
   clamav:
-    # image: flavioaiello/mailstack-clamav
-    build: ./clamav
+    image: flavioaiello/clamav
     volumes:
       - /tmp/mailstack/filter:/data
+    healthcheck:
+      test: nc -w 7 -zvv 0.0.0.0 3310
+      interval: 30s
+      timeout: 30s
+      retries: 20
     deploy:
+      resources:
+        reservations:
+          cpus: '0.05'
+          memory: 1024M
+        limits:
+          memory: 1024M
+      mode: replicated
+      replicas: 1
       restart_policy:
-        condition: on-failure
-        max_attempts: 3
+        condition: any
+        delay: 5s
+        max_attempts: 10
 
   freshclam:
-    # image: flavioaiello/mailstack-freshclam
-    build: ./freshclam
+    image: flavioaiello/freshclam
     volumes:
       - /tmp/mailstack/filter:/data
     deploy:
+      resources:
+        reservations:
+          cpus: '0.05'
+          memory: 1024M
+        limits:
+          memory: 1024M
+      mode: replicated
+      replicas: 1
       restart_policy:
-        condition: on-failure
-        max_attempts: 3
+        condition: any
+        delay: 5s
+        max_attempts: 10
 
   rspamd:
-    # image: flavioaiello/mailstack-rspamd
-    build: ./rspamd
+    image: flavioaiello/rspamd
     volumes:
       - /tmp/mailstack/filter:/var/lib/rspamd
+    healthcheck:
+      test: nc -w 7 -zvv 0.0.0.0 587
+      interval: 30s
+      timeout: 30s
+      retries: 20
     deploy:
+      resources:
+        reservations:
+          cpus: '0.05'
+          memory: 1024M
+        limits:
+          memory: 1024M
+      mode: replicated
+      replicas: 1
       restart_policy:
-        condition: on-failure
-        max_attempts: 3
+        condition: any
+        delay: 5s
+        max_attempts: 10
 
   radicale:
-    # image: flavioaiello/mailstack-radicale
+    image: flavioaiello/radicale
     build: ./radicale
     volumes:
       - /tmp/mailstack/dav:/data
+    healthcheck:
+      test: nc -w 7 -zvv 0.0.0.0 587
+      interval: 30s
+      timeout: 30s
+      retries: 20
     deploy:
+      resources:
+        reservations:
+          cpus: '0.05'
+          memory: 1024M
+        limits:
+          memory: 1024M
+      mode: replicated
+      replicas: 1
       restart_policy:
-        condition: on-failure
-        max_attempts: 3
+        condition: any
+        delay: 5s
+        max_attempts: 10
