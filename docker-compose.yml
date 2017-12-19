@@ -2,26 +2,6 @@ version: '3.3'
 
 services:
 
-  clamav:
-    # image: flavioaiello/mailstack-clamav
-    build: ./clamav
-    volumes:
-      - /tmp/mailstack/filter:/data
-    deploy:
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
-
-  freshclam:
-    # image: flavioaiello/mailstack-freshclam
-    build: ./freshclam
-    volumes:
-      - /tmp/mailstack/filter:/data
-    deploy:
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
-
   dovecot:
     # image: flavioaiello/mailstack-dovecot
     build: ./dovecot
@@ -40,29 +20,6 @@ services:
       - /tmp/mailstack/mail:/mail
       - /tmp/mailstack/certs:/certs
       - /tmp/mailstack/overrides:/overrides
-    deploy:
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
-
-  roundcube:
-    # image: flavioaiello/mailstack-roundcube
-    build: ./roundcube
-    environment:
-      - SECRET_KEY=MyUn1qu3curePW
-    ports:
-      - "8080:80"
-    volumes:
-      - /tmp/mailstack/webmail:/data
-    deploy:
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
-
-  redis:
-    image: redis:latest
-    volumes:
-      - /tmp/mailstack/redis:/data
     deploy:
       restart_policy:
         condition: on-failure
@@ -91,6 +48,26 @@ services:
         condition: on-failure
         max_attempts: 3
 
+  clamav:
+    # image: flavioaiello/mailstack-clamav
+    build: ./clamav
+    volumes:
+      - /tmp/mailstack/filter:/data
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
+  freshclam:
+    # image: flavioaiello/mailstack-freshclam
+    build: ./freshclam
+    volumes:
+      - /tmp/mailstack/filter:/data
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
   rspamd:
     # image: flavioaiello/mailstack-rspamd
     build: ./rspamd
@@ -101,46 +78,11 @@ services:
         condition: on-failure
         max_attempts: 3
 
-
   radicale:
     # image: flavioaiello/mailstack-radicale
     build: ./radicale
     volumes:
       - /tmp/mailstack/dav:/data
-    deploy:
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
-
-  admin:
-    # image: flavioaiello/mailstack-admin
-    build: ./admin
-    environment:
-      - DEBUG=false
-      - TLS_FLAVOR=none
-      - USERNAME=admin
-      - DOMAIN=vcap.me
-      - PASSWORD=testpw
-    ports:
-      - "8000:80"
-    volumes:
-      - /tmp/mailstack/data:/data
-      - /tmp/mailstack/dkim:/dkim
-      - /tmp/mailstack/certs:/certs
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    deploy:
-      restart_policy:
-        condition: on-failure
-        max_attempts: 3
-
-  fetchmail:
-    # image: flavioaiello/mailstack-fetchmail
-    build: ./fetchmail
-    environment:
-      - DEBUG=false
-      - FETCHMAIL_DELAY=600
-    volumes:
-      - /tmp/mailstack/data:/data
     deploy:
       restart_policy:
         condition: on-failure
