@@ -1,5 +1,5 @@
 # Mailstack - WIP!
-Simple but powserfull e-mail suite based on postfix, dovecot, clamav, rspamd and radicale
+Simple but powerfull e-mail suite based on postfix, dovecot, clamav, rspamd and radicale
 
 ## Scope
 tbd
