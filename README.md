@@ -47,4 +47,9 @@ https://img.shields.io/docker/automated/flavioaiello/rspamd.svg)](https://hub.do
 [![Docker Automation](
 https://img.shields.io/docker/automated/flavioaiello/radicale.svg)](https://hub.docker.com/r/flavioaiello/radicale/)
 
-
+### Mailman
+[![Docker Build Status](https://img.shields.io/docker/build/flavioaiello/mailman.svg)](https://hub.docker.com/r/flavioaiello/mailman/)
+[![Docker Stars](https://img.shields.io/docker/stars/flavioaiello/mailman.svg)](https://hub.docker.com/r/flavioaiello/mailman/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/flavioaiello/mailman.svg)](https://hub.docker.com/r/flavioaiello/mailman/)
+[![Docker Automation](
+https://img.shields.io/docker/automated/flavioaiello/mailman.svg)](https://hub.docker.com/r/flavioaiello/mailman/)
