@@ -1,0 +1,5 @@
+user = {{ MYSQL_USER }}
+password = {{ MYSQL_PASSWORD }}
+hosts = {{ MYSQL_DATABASE }}
+dbname = {{ MYSQL_DATABASE }}
+query = select concat(destination_username, '@', destination_domain) as destinations from aliases where source_username = '%u' and source_domain = '%d' and enabled = true;

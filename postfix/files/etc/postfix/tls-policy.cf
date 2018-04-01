@@ -1,0 +1,5 @@
+user = {{ MYSQL_USER }}
+password = {{ MYSQL_PASSWORD }}
+hosts = {{ MYSQL_DATABASE }}
+dbname = {{ MYSQL_DATABASE }}
+query = SELECT policy, params FROM tlspolicies WHERE domain = '%s'

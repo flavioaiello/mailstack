@@ -1,42 +1,59 @@
-# service type  private unpriv  chroot  wakeup  maxproc command + args
-#               (yes)   (yes)   (yes)   (never) (100)
 
-# Exposed SMTP services
-smtp      inet  n       -       n       -       -       smtpd
-  -o smtpd_helo_restrictions=permit_mynetworks,permit
-submission inet n       -       n       -       -       smtpd
-  -o smtpd_tls_security_level=encrypt
-  -o smtpd_sasl_auth_enable=yes
-  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
-  -o cleanup_service_name=outclean
-smtps     inet  n       -       n       -       -       smtpd
-  -o smtpd_tls_security_level=encrypt
-  -o smtpd_sasl_auth_enable=yes
-  -o smtpd_tls_wrappermode=yes
-  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
-  -o cleanup_service_name=outclean
+# service type  private(yes) unpriv(yes)  chroot(no)  wakeup(never)  maxproc(100) command + args
 
-# Additional services
-outclean   unix n       -       n       -       0       cleanup
-  -o header_checks=pcre:/etc/postfix/outclean_header_filter
+# Postscreen
+smtp      inet  n       -       y       -       1       postscreen -o smtpd_sasl_auth_enable=no
 
-# Internal postfix services
-pickup    unix  n       -       n       60      1       pickup
-cleanup   unix  n       -       n       -       0       cleanup
+# SMTP
+smtpd     pass  -       -       y       -       -       smtpd
+
+# DNS blocklist lookup
+dnsblog   unix  -       -       y       -       0       dnsblog
+
+# TLS proxy for postscreen
+tlsproxy  unix  -       -       y       -       0       tlsproxy
+
+# Mail client settings
+submission inet n       -       y       -       -       smtpd
+    -o syslog_name=postfix/submission
+    -o smtpd_tls_security_level=encrypt
+    -o smtpd_sasl_auth_enable=yes
+    -o smtpd_sasl_type=dovecot
+    -o smtpd_sasl_path=private/auth
+    -o smtpd_sasl_security_options=noanonymous
+    -o smtpd_client_restrictions=$mua_client_restrictions
+    -o smtpd_sender_restrictions=$mua_sender_restrictions
+    -o smtpd_relay_restrictions=$mua_relay_restrictions
+    -o milter_macro_daemon_name=ORIGINATING
+    -o smtpd_sender_login_maps=mysql:/etc/postfix/sql/sender-login-maps.cf
+    -o smtpd_helo_required=no
+    -o smtpd_helo_restrictions=
+    -o cleanup_service_name=submission-header-cleanup
+
+# Services
+pickup    unix  n       -       y       60      1       pickup
+cleanup   unix  n       -       y       -       0       cleanup
 qmgr      unix  n       -       n       300     1       qmgr
-tlsmgr    unix  -       -       n       1000?   1       tlsmgr
-rewrite   unix  -       -       n       -       -       trivial-rewrite
-bounce    unix  -       -       n       -       0       bounce
-defer     unix  -       -       n       -       0       bounce
-trace     unix  -       -       n       -       0       bounce
-verify    unix  -       -       n       -       1       verify
-flush     unix  n       -       n       1000?   0       flush
+tlsmgr    unix  -       -       y       1000?   1       tlsmgr
+rewrite   unix  -       -       y       -       -       trivial-rewrite
+bounce    unix  -       -       y       -       0       bounce
+defer     unix  -       -       y       -       0       bounce
+trace     unix  -       -       y       -       0       bounce
+verify    unix  -       -       y       -       1       verify
+flush     unix  n       -       y       1000?   0       flush
 proxymap  unix  -       -       n       -       -       proxymap
-smtp      unix  -       -       n       -       -       smtp
-relay     unix  -       -       n       -       -       smtp
-error     unix  -       -       n       -       -       error
-retry     unix  -       -       n       -       -       error
-discard   unix  -       -       n       -       -       discard
-lmtp      unix  -       -       n       -       -       lmtp
-anvil     unix  -       -       n       -       1       anvil
-scache    unix  -       -       n       -       1       scache
+proxywrite unix -       -       n       -       1       proxymap
+smtp      unix  -       -       y       -       -       smtp
+relay     unix  -       -       y       -       -       smtp
+showq     unix  n       -       y       -       -       showq
+error     unix  -       -       y       -       -       error
+retry     unix  -       -       y       -       -       error
+discard   unix  -       -       y       -       -       discard
+local     unix  -       n       n       -       -       local
+virtual   unix  -       n       n       -       -       virtual
+lmtp      unix  -       -       y       -       -       lmtp
+anvil     unix  -       -       y       -       1       anvil
+scache    unix  -       -       y       -       1       scache
+
+# Cleanup MUA headers
+submission-header-cleanup unix n - n    -       0       cleanup -o header_checks=regexp:/etc/postfix/submission_header_cleanup

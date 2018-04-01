@@ -1,0 +1,5 @@
+user = {{ MYSQL_USER }}
+password = {{ MYSQL_PASSWORD }}
+hosts = {{ MYSQL_DATABASE }}
+dbname = {{ MYSQL_DATABASE }}
+query = select if(sendonly = true, 'REJECT', 'OK') AS access from accounts where username = '%u' and domain = '%d' and enabled = true LIMIT 1;
