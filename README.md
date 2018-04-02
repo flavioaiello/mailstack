@@ -1,11 +1,18 @@
 # Mailstack - WIP!
-Simple and powerfull e-mail suite based on OSS components running on docker.
+Simple lightweight and powerfull e-mail suite based on OSS components running on docker.
 
 ## Scope
 This project aims to offer a ready to go self hosted email solution for small medium business. Still work in progress. Feel free to use it and participate to the ongoing engeering.
 
 ## Getting started
-tbd
+Starting your email suite is very easy. Just follow the instructions below to get the mailstack up and running.
+
+### Prequisites
+Obviously you need an own domain name and access to your DNS. Deploying your mailstack also needs an own server.
+
+#### DNS
+
+#### Persistance
 
 ## Components
 
