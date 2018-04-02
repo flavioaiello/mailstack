@@ -161,3 +161,7 @@ services:
         condition: any
         delay: 5s
         max_attempts: 10
+
+networks:
+  default:
+    driver: overlay
