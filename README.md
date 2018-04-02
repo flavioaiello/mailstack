@@ -71,3 +71,10 @@ https://img.shields.io/docker/automated/flavioaiello/mariadb.svg)](https://hub.d
 [![Docker Pulls](https://img.shields.io/docker/pulls/flavioaiello/mailman.svg)](https://hub.docker.com/r/flavioaiello/mailman/)
 [![Docker Automation](
 https://img.shields.io/docker/automated/flavioaiello/mailman.svg)](https://hub.docker.com/r/flavioaiello/mailman/)
+
+### Sogo
+[![Docker Build Status](https://img.shields.io/docker/build/flavioaiello/sogo.svg)](https://hub.docker.com/r/flavioaiello/sogo/)
+[![Docker Stars](https://img.shields.io/docker/stars/flavioaiello/sogo.svg)](https://hub.docker.com/r/flavioaiello/sogo/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/flavioaiello/sogo.svg)](https://hub.docker.com/r/flavioaiello/sogo/)
+[![Docker Automation](
+https://img.shields.io/docker/automated/flavioaiello/sogo.svg)](https://hub.docker.com/r/flavioaiello/sogo/)
