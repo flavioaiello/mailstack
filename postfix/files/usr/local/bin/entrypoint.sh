@@ -8,6 +8,8 @@ done
 
 # Postfix postinstall procedure
 /usr/lib/postfix/post-install meta_directory=/etc/postfix create-missing
+postmap /etc/postfix/without_ptr
+newaliases
 
 echo "*** Startup $0 suceeded now starting $@ ***"
 exec "$@"
