@@ -1,8 +1,12 @@
 # Mailstack - WIP!
-Simple but powerfull e-mail suite based on postfix, dovecot, clamav, rspamd and radicale
+Simple and powerfull e-mail suite based on OSS components running on docker.
 
 ## Scope
+This project aims to offer a ready to go self hosted email solution for small medium business. Still work in progress. Feel free to use it and participate to the ongoing engeering.
+
+## Getting started
 tbd
+
 ## Components
 
 ### Postfix
