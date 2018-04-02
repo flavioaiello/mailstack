@@ -47,6 +47,13 @@ https://img.shields.io/docker/automated/flavioaiello/rspamd.svg)](https://hub.do
 [![Docker Automation](
 https://img.shields.io/docker/automated/flavioaiello/radicale.svg)](https://hub.docker.com/r/flavioaiello/radicale/)
 
+### MariaDB
+[![Docker Build Status](https://img.shields.io/docker/build/flavioaiello/mariadb.svg)](https://hub.docker.com/r/flavioaiello/mariadb/)
+[![Docker Stars](https://img.shields.io/docker/stars/flavioaiello/mariadb.svg)](https://hub.docker.com/r/flavioaiello/mariadb/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/flavioaiello/mariadb.svg)](https://hub.docker.com/r/flavioaiello/mariadb/)
+[![Docker Automation](
+https://img.shields.io/docker/automated/flavioaiello/mariadb.svg)](https://hub.docker.com/r/flavioaiello/mariadb/)
+
 ### Mailman
 [![Docker Build Status](https://img.shields.io/docker/build/flavioaiello/mailman.svg)](https://hub.docker.com/r/flavioaiello/mailman/)
 [![Docker Stars](https://img.shields.io/docker/stars/flavioaiello/mailman.svg)](https://hub.docker.com/r/flavioaiello/mailman/)
