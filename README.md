@@ -1,4 +1,4 @@
-# Mailstack - WIP!
+# Mailstack - work in progress - WIP
 Simple lightweight and powerfull e-mail suite based on OSS components running on docker.
 
 ## Scope
